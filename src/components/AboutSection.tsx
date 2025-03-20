@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Sprout, Farm, Users } from 'lucide-react';
+import { Sprout, Leaf, Users } from 'lucide-react';
 
 const features = [
   {
@@ -12,7 +12,7 @@ const features = [
   {
     title: "How We Operate",
     description: "Through our digital platform, we facilitate knowledge sharing, offer training programs, and create connections between farmers, suppliers, and buyers. Our user-friendly tools help streamline agricultural operations.",
-    icon: Farm,
+    icon: Leaf,
     delay: 0.2
   },
   {
