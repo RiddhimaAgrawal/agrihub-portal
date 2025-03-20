@@ -9,11 +9,7 @@ interface LogoProps {
 const Logo = ({ className }: LogoProps) => {
   return (
     <div className={cn("flex items-center", className)}>
-      <img 
-        src="C:\Users\KIIT\AppData\Local\Microsoft\Windows\INetCache\IE\5OOJIZAK" 
-        alt="AgriHub Logo" 
-        className="h-10 md:h-12" // Adjust height as needed
-      />
+      <span className="text-2xl font-bold text-agrihub-darkGreen">AGRI<span className="text-agrihub-green">HUB</span></span>
     </div>
   );
 };

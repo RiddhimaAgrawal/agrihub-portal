@@ -24,8 +24,8 @@ const Hero = () => {
           {/* Background Image */}
           <div className="relative w-full h-96 md:h-[500px] lg:h-[600px] mb-8 animate-fade-up" style={{ animationDelay: '0.1s' }}>
             <img
-              src="/Main.jpeg" // Path to the uploaded image
-              alt="Farmers in field"
+              src="/lovable-uploads/069f49e5-8594-48b2-817a-02647f0317ae.png"
+              alt="Farmers discussing crops in field"
               className="w-full h-full object-cover rounded-lg shadow-lg"
             />
           </div>
