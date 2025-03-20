@@ -1,12 +1,79 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React from 'react';
+import Navbar from '../components/Navbar';
+import AboutSection from '../components/AboutSection';
+import ImageSection from '../components/ImageSection';
+import { ArrowDown } from 'lucide-react';
+
+const Hero = () => {
+  const scrollToAbout = () => {
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <section className="relative min-h-screen flex items-center pt-20 px-6 md:px-10 bg-gradient-to-b from-white to-gray-50">
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="flex flex-col items-center text-center">
+          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-semibold tracking-wide text-agrihub-darkGreen uppercase bg-agrihub-green/10 rounded-full animate-fade-up">
+            The Future of Farming
+          </span>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-6 animate-fade-up" style={{ animationDelay: '0.1s' }}>
+            Sustainable Agriculture <br className="hidden md:block" />
+            for a Better Future
+          </h1>
+          <p className="max-w-2xl mx-auto text-gray-600 text-lg md:text-xl mb-8 animate-fade-up" style={{ animationDelay: '0.2s' }}>
+            AGRIHUB connects farmers with technology, resources, and markets to create a sustainable agricultural ecosystem that benefits everyone.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 mb-16 animate-fade-up" style={{ animationDelay: '0.3s' }}>
+            <button className="btn px-8 py-3 rounded-lg bg-agrihub-green text-white font-medium hover:bg-agrihub-darkGreen transition-colors duration-300">
+              Get Started
+            </button>
+            <button className="btn px-8 py-3 rounded-lg border border-agrihub-green text-agrihub-darkGreen font-medium hover:bg-agrihub-green/10 transition-colors duration-300">
+              Learn More
+            </button>
+          </div>
+          
+          <button 
+            onClick={scrollToAbout}
+            className="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white shadow-md hover:shadow-lg transition-shadow duration-300 animate-fade-up"
+            style={{ animationDelay: '0.4s' }}
+            aria-label="Scroll to about section"
+          >
+            <ArrowDown size={20} className="text-agrihub-darkGreen animate-bounce" />
+          </button>
+        </div>
+      </div>
+      
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-gray-50 to-transparent" />
+    </section>
+  );
+};
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-white">
+      <Navbar />
+      <Hero />
+      <div id="about">
+        <AboutSection />
       </div>
+      <ImageSection />
+      
+      <footer className="py-10 px-6 md:px-10 bg-white border-t border-gray-100">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+          <div className="mb-6 md:mb-0">
+            <span className="text-sm text-gray-500">© 2023 AGRIHUB. All rights reserved.</span>
+          </div>
+          <div className="flex space-x-6">
+            <a href="#" className="text-gray-500 hover:text-agrihub-green transition-colors duration-300">Terms</a>
+            <a href="#" className="text-gray-500 hover:text-agrihub-green transition-colors duration-300">Privacy</a>
+            <a href="#" className="text-gray-500 hover:text-agrihub-green transition-colors duration-300">Contact</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
