@@ -20,13 +20,16 @@ const Hero = () => {
           <span className="inline-block px-4 py-1.5 mb-6 text-xs font-semibold tracking-wide text-agrihub-darkGreen uppercase bg-agrihub-green/10 rounded-full animate-fade-up">
             The Future of Farming
           </span>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-6 animate-fade-up" style={{ animationDelay: '0.1s' }}>
-            Sustainable Agriculture <br className="hidden md:block" />
-            for a Better Future
-          </h1>
-          <p className="max-w-2xl mx-auto text-gray-600 text-lg md:text-xl mb-8 animate-fade-up" style={{ animationDelay: '0.2s' }}>
-            AGRIHUB connects farmers with technology, resources, and markets to create a sustainable agricultural ecosystem that benefits everyone.
-          </p>
+
+          {/* Background Image */}
+          <div className="relative w-full h-96 md:h-[500px] lg:h-[600px] mb-8 animate-fade-up" style={{ animationDelay: '0.1s' }}>
+            <img
+              src="/Main.jpeg" // Path to the uploaded image
+              alt="Farmers in field"
+              className="w-full h-full object-cover rounded-lg shadow-lg"
+            />
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-4 mb-16 animate-fade-up" style={{ animationDelay: '0.3s' }}>
             <button className="btn px-8 py-3 rounded-lg bg-agrihub-green text-white font-medium hover:bg-agrihub-darkGreen transition-colors duration-300">
               Get Started
