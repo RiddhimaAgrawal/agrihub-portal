@@ -9,7 +9,11 @@ interface LogoProps {
 const Logo = ({ className }: LogoProps) => {
   return (
     <div className={cn("flex items-center", className)}>
-      <span className="text-2xl font-bold text-agrihub-darkGreen">AGRI<span className="text-agrihub-green">HUB</span></span>
+      <img 
+        src="/lovable-uploads/d5940055-812d-4df8-ab6a-fe7e82ba671d.png" 
+        alt="AgriHub Logo" 
+        className="h-10 md:h-12" 
+      />
     </div>
   );
 };
