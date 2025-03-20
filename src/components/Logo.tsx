@@ -10,7 +10,7 @@ const Logo = ({ className }: LogoProps) => {
   return (
     <div className={cn("flex items-center", className)}>
       <img 
-        src="/lovable-uploads/d5940055-812d-4df8-ab6a-fe7e82ba671d.png" 
+        src="/lovable-uploads/12a23606-6899-4e5f-a905-167a8a10a7ff.png" 
         alt="AgriHub Logo" 
         className="h-10 md:h-12" 
       />

@@ -3,19 +3,19 @@ import React, { useState, useEffect } from 'react';
 
 const images = [
   {
-    src: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=1200&q=80",
-    alt: "Beautiful orange flowers in a field",
-    caption: "Sustainable Farming Practices"
+    src: "/lovable-uploads/6c547294-9122-4a9b-89c5-40fb7a8ada7d.png",
+    alt: "Farmer plowing field with oxen",
+    caption: "Traditional Farming Practices"
   },
   {
-    src: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=1200&q=80",
-    alt: "Sunlight passing through green leafed trees",
-    caption: "Natural Resource Management"
+    src: "/lovable-uploads/accb098e-8db4-4d77-98c6-b66c903cad1c.png",
+    alt: "Young crop plants growing in rows",
+    caption: "Sustainable Crop Management"
   },
   {
-    src: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=80",
-    alt: "Low angle photography of trees at daytime",
-    caption: "Ecological Balance"
+    src: "/lovable-uploads/dd467665-1668-47af-a83c-75bb594005ad.png",
+    alt: "Farmer watching field burning - practice to avoid",
+    caption: "Stubble Burning Prevention"
   }
 ];
 

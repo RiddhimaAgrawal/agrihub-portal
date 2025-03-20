@@ -5,13 +5,13 @@ import { Sprout, Leaf, Users } from 'lucide-react';
 const features = [
   {
     title: "What We Do",
-    description: "AGRIHUB connects farmers with modern agricultural technologies and resources to increase productivity and sustainability. We provide access to innovative farming solutions, market information, and expert guidance.",
+    description: "AgriHub connects farmers with resources and insights to promote sustainable agriculture and prevent stubble burning, a major issue in Haryana contributing to severe air pollution and health risks. Farmers register through a mobile or web app, providing farm details and Aadhaar verification for secure access. AI-driven recommendations match them with microbial solutions, equipment, and soil testing kits. Regular soil tests provide tailored crop advice. Farmers earn points and financial rewards for adopting eco-friendly practices, redeemable via a digital wallet.",
     icon: Sprout,
     delay: 0.1
   },
   {
     title: "How We Operate",
-    description: "Through our digital platform, we facilitate knowledge sharing, offer training programs, and create connections between farmers, suppliers, and buyers. Our user-friendly tools help streamline agricultural operations.",
+    description: "Through our digital platform, we facilitate knowledge sharing, offer training programs, and create connections between farmers, suppliers, and buyers. Our user-friendly tools help streamline agricultural operations. Real-time data on stubble-burning prevention and resource use is shared with government bodies to support policy-making and performance tracking. AgriHub enhances efficiency, transparency, and sustainability, empowering farmers and protecting the environment.",
     icon: Leaf,
     delay: 0.2
   },
@@ -28,12 +28,15 @@ const AboutSection = () => {
     <section className="py-20 px-6 md:px-10 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold tracking-wide text-agrihub-darkGreen uppercase bg-agrihub-green/10 rounded-full animate-fade-up">About Us</span>
+          <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold tracking-wide text-agrihub-darkGreen uppercase bg-agrihub-green/10 rounded-full animate-fade-up">Objective</span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-6 animate-fade-up" style={{ animationDelay: '0.1s' }}>
-            Revolutionizing Agriculture
+            Empowering Farmers
           </h2>
           <p className="max-w-2xl mx-auto text-gray-600 text-lg md:text-xl animate-fade-up" style={{ animationDelay: '0.2s' }}>
-            We're on a mission to empower farmers with technology and connections that drive sustainable growth.
+            This project creates a digital platform to empower farmers and promote sustainability. By collecting farm geolocation, crop types, and soil health data, it provides tailored solutions like microbial recommendations, subsidized equipment, and soil health reports. A reward-based system encourages eco-friendly practices, including stubble-burning prevention, through financial benefits and discounts. The platform connects farmers with government resources, ensuring access to tools and support.
+          </p>
+          <p className="max-w-2xl mx-auto text-gray-600 text-lg md:text-xl mt-4 animate-fade-up" style={{ animationDelay: '0.3s' }}>
+            Real-time data reporting enhances transparency and supports policy-making by tracking stubble burning and resource use. With AI-driven recommendations, multilingual support, and offline access, the platform addresses digital literacy challenges, fostering long-term agricultural growth and sustainability.
           </p>
         </div>
 
