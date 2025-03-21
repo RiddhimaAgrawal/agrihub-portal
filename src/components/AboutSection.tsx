@@ -1,6 +1,11 @@
 
 import React from 'react';
-import { Sprout, Leaf, Users } from 'lucide-react';
+import { Sprout, Leaf, Users, UserCheck, UserPlus, UserCog } from 'lucide-react';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 const features = [
   {
@@ -19,7 +24,24 @@ const features = [
     title: "Our Community",
     description: "AGRIHUB builds a thriving community of progressive farmers, agricultural experts, and industry partners. Together, we're transforming farming practices and creating sustainable solutions for future generations.",
     icon: Users,
-    delay: 0.3
+    delay: 0.3,
+    extraInfo: [
+      {
+        title: "Farmers & Producers",
+        description: "Over 10,000 farmers across Haryana have joined AgriHub, adopting sustainable practices and increasing their yields by an average of 15%.",
+        icon: UserCheck
+      },
+      {
+        title: "Agricultural Experts",
+        description: "Our network includes soil scientists, crop specialists, and agricultural engineers who provide expertise and validate our recommendations.",
+        icon: UserCog
+      },
+      {
+        title: "New Members",
+        description: "Join our growing community of forward-thinking farmers and contribute to a sustainable agricultural revolution.",
+        icon: UserPlus
+      }
+    ]
   }
 ];
 
@@ -52,6 +74,34 @@ const AboutSection = () => {
               </div>
               <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
               <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+              
+              {feature.extraInfo && (
+                <div className="mt-6 space-y-4">
+                  <h4 className="font-semibold text-agrihub-darkGreen border-b border-gray-200 pb-2">Community Members</h4>
+                  <div className="grid grid-cols-1 gap-3">
+                    {feature.extraInfo.map((info, i) => (
+                      <HoverCard key={i}>
+                        <HoverCardTrigger asChild>
+                          <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <div className="w-8 h-8 flex items-center justify-center rounded-full bg-agrihub-green/10 text-agrihub-green">
+                              <info.icon size={18} />
+                            </div>
+                            <span className="text-sm font-medium">{info.title}</span>
+                          </div>
+                        </HoverCardTrigger>
+                        <HoverCardContent className="w-80">
+                          <div className="flex justify-between space-x-4">
+                            <div className="space-y-1">
+                              <h4 className="text-sm font-semibold">{info.title}</h4>
+                              <p className="text-sm">{info.description}</p>
+                            </div>
+                          </div>
+                        </HoverCardContent>
+                      </HoverCard>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
