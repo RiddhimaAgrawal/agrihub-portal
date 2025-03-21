@@ -142,7 +142,7 @@ const Index = () => {
       <footer className="py-10 px-6 md:px-10 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
-            <span className="text-sm text-gray-500">© 2023 AGRIHUB. All rights reserved.</span>
+            <span className="text-sm text-gray-500">© 2025 AGRIHUB. All rights reserved.</span>
           </div>
           <div className="flex space-x-6">
             <a href="#" className="text-gray-500 hover:text-agrihub-green transition-colors duration-300">Terms</a>
