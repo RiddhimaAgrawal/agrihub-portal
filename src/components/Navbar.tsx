@@ -1,11 +1,14 @@
 
 import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
-import Button from './Button';
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +24,21 @@ const Navbar = () => {
     };
   }, [scrolled]);
 
+  useEffect(() => {
+    // Check if user is logged in
+    const userStr = localStorage.getItem("currentUser");
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      setIsLoggedIn(user.isLoggedIn);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("currentUser");
+    setIsLoggedIn(false);
+    navigate("/");
+  };
+
   return (
     <header 
       className={cn(
@@ -31,22 +49,48 @@ const Navbar = () => {
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Logo className="animate-fade-in" />
+        <Link to="/">
+          <Logo className="animate-fade-in" />
+        </Link>
         
         <div className="flex items-center space-x-4">
-          <Button
-            variant="outline"
-            className="animate-slide-in-right" 
-            style={{ animationDelay: '0.1s' }}
-          >
-            Login
-          </Button>
-          <Button 
-            className="animate-slide-in-right"
-            style={{ animationDelay: '0.2s' }}
-          >
-            Sign Up
-          </Button>
+          {isLoggedIn ? (
+            <>
+              <Button
+                variant="outline"
+                className="animate-slide-in-right" 
+                style={{ animationDelay: '0.1s' }}
+                onClick={() => navigate('/dashboard')}
+              >
+                Dashboard
+              </Button>
+              <Button 
+                className="animate-slide-in-right"
+                style={{ animationDelay: '0.2s' }}
+                onClick={handleLogout}
+              >
+                Log Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                variant="outline"
+                className="animate-slide-in-right" 
+                style={{ animationDelay: '0.1s' }}
+                onClick={() => navigate('/login')}
+              >
+                Login
+              </Button>
+              <Button 
+                className="animate-slide-in-right"
+                style={{ animationDelay: '0.2s' }}
+                onClick={() => navigate('/signup')}
+              >
+                Sign Up
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </header>
