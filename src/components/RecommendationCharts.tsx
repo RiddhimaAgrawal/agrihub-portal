@@ -89,7 +89,12 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
-                <Tooltip formatter={(value) => [`${value.toFixed(2)}`, '']} />
+                <Tooltip formatter={(value: number | string) => {
+                  if (typeof value === 'number') {
+                    return [value.toFixed(2), ''];
+                  }
+                  return [value, ''];
+                }} />
                 <Legend />
                 <Bar dataKey="Microbial" fill="#22c55e" name={`Microbial${microSolution ? ` (${microSolution})` : ''}`} />
                 <Bar dataKey="Fertilizer" fill="#f97316" name={`Fertilizer${fertilizer ? ` (${fertilizer})` : ''}`} />
@@ -128,7 +133,12 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value) => [`${value}%`, '']} />
+                  <Tooltip formatter={(value: number | string) => {
+                    if (typeof value === 'number') {
+                      return [`${value}%`, ''];
+                    }
+                    return [value, ''];
+                  }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
