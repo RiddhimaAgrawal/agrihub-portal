@@ -21,6 +21,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import RecommendationCharts from "@/components/RecommendationCharts";
+import StubbleInfoSection from "@/components/StubbleInfoSection";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -36,6 +38,16 @@ const Dashboard = () => {
   const [landSize, setLandSize] = useState("");
   const [unit, setUnit] = useState("Acre");
   const [recommendation, setRecommendation] = useState("");
+  
+  // Chart data
+  const [chartData, setChartData] = useState({
+    microSolution: "",
+    fertilizer: "",
+    microCost: 0,
+    fertilizerCost: 0,
+    microFertilityIncrease: 0,
+    fertilizerFertilityIncrease: 0
+  });
 
   useEffect(() => {
     // Check if user is logged in
@@ -69,6 +81,15 @@ const Dashboard = () => {
     navigate("/login");
   };
 
+  const extractNumericValue = (text: string): number => {
+    // Extract a number from formats like "15-20%" or "550-600"
+    const matches = text.match(/(\d+\.?\d*)-(\d+\.?\d*)/);
+    if (matches && matches.length >= 3) {
+      return (parseFloat(matches[1]) + parseFloat(matches[2])) / 2;
+    }
+    return 0;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -100,6 +121,21 @@ const Dashboard = () => {
     `;
     
     setRecommendation(mockRecommendation);
+    
+    // Extract data for charts
+    const microCost = parseFloat(landSize) * 575;
+    const fertilizerCost = parseFloat(landSize) * 2250;
+    const microFertility = extractNumericValue("15-20%");
+    const fertilizerFertility = extractNumericValue("20-25%");
+    
+    setChartData({
+      microSolution: "Bio-Decomposer Mix",
+      fertilizer: "NPK 19:19:19 + Micro",
+      microCost: microCost,
+      fertilizerCost: fertilizerCost,
+      microFertilityIncrease: microFertility,
+      fertilizerFertilityIncrease: fertilizerFertility
+    });
     
     toast({
       title: "Analysis complete",
@@ -261,6 +297,19 @@ const Dashboard = () => {
             </CardFooter>
           </Card>
         </div>
+        
+        {recommendation && (
+          <RecommendationCharts 
+            microSolution={chartData.microSolution}
+            fertilizer={chartData.fertilizer}
+            microCost={chartData.microCost}
+            fertilizerCost={chartData.fertilizerCost}
+            microFertilityIncrease={chartData.microFertilityIncrease}
+            fertilizerFertilityIncrease={chartData.fertilizerFertilityIncrease}
+          />
+        )}
+        
+        <StubbleInfoSection />
       </div>
     </div>
   );
