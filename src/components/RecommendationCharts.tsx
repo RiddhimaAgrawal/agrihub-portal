@@ -11,9 +11,11 @@ import {
   ResponsiveContainer,
   PieChart,
   Pie,
-  Cell
+  Cell,
+  ReferenceLine
 } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 
 interface ChartProps {
   microSolution?: string;
@@ -35,13 +37,17 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
   microFertilityIncrease,
   fertilizerFertilityIncrease,
 }) => {
-  // Format data for the comparison chart
-  const costComparisonData = [
+  // Format data for the comparison chart - separate cost data from other metrics
+  const costData = [
     {
       name: "Cost (₹)",
       Microbial: microCost || 0,
       Fertilizer: fertilizerCost || 0,
-    },
+    }
+  ];
+  
+  // Separate chart for fertility increase and cost efficiency
+  const performanceData = [
     {
       name: "Fertility Increase (%)",
       Microbial: microFertilityIncrease || 0,
@@ -49,8 +55,8 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
     },
     {
       name: "Cost Efficiency",
-      Microbial: microFertilityIncrease ? (microFertilityIncrease / (microCost || 1)) * 100 : 0,
-      Fertilizer: fertilizerFertilityIncrease ? (fertilizerFertilityIncrease / (fertilizerCost || 1)) * 100 : 0,
+      Microbial: microFertilityIncrease ? ((microFertilityIncrease / (microCost || 1)) * 10).toFixed(2) : 0,
+      Fertilizer: fertilizerFertilityIncrease ? ((fertilizerFertilityIncrease / (fertilizerCost || 1)) * 10).toFixed(2) : 0,
     }
   ];
 
@@ -72,40 +78,75 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
 
   return (
     <div className="space-y-6 mt-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Solution Comparison</CardTitle>
-          <CardDescription>
-            Cost and effectiveness comparison between microbial solution and fertilizer
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={costComparisonData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip formatter={(value: number | string) => {
-                  if (typeof value === 'number') {
-                    return [value.toFixed(2), ''];
-                  }
-                  return [value, ''];
-                }} />
-                <Legend />
-                <Bar dataKey="Microbial" fill="#22c55e" name={`Microbial${microSolution ? ` (${microSolution})` : ''}`} />
-                <Bar dataKey="Fertilizer" fill="#f97316" name={`Fertilizer${fertilizer ? ` (${fertilizer})` : ''}`} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="mt-4 text-sm text-muted-foreground">
-            <p>* Cost Efficiency represents the fertility increase percentage per 100 rupees spent</p>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Solution Cost Comparison</CardTitle>
+            <CardDescription>
+              Cost comparison between microbial solution and fertilizer
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={costData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip formatter={(value: number | string) => {
+                    if (typeof value === 'number') {
+                      return [`₹${value.toFixed(2)}`, ''];
+                    }
+                    return [value, ''];
+                  }} />
+                  <Legend />
+                  <Bar dataKey="Microbial" fill="#22c55e" name={`Microbial${microSolution ? ` (${microSolution})` : ''}`} />
+                  <Bar dataKey="Fertilizer" fill="#f97316" name={`Fertilizer${fertilizer ? ` (${fertilizer})` : ''}`} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Performance Comparison</CardTitle>
+            <CardDescription>
+              Fertility increase and cost efficiency comparison
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={performanceData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip formatter={(value: number | string) => {
+                    if (typeof value === 'number') {
+                      return [value.toFixed(2), ''];
+                    }
+                    return [value, ''];
+                  }} />
+                  <Legend />
+                  <Bar dataKey="Microbial" fill="#22c55e" name={`Microbial${microSolution ? ` (${microSolution})` : ''}`} />
+                  <Bar dataKey="Fertilizer" fill="#f97316" name={`Fertilizer${fertilizer ? ` (${fertilizer})` : ''}`} />
+                  <ReferenceLine y={0} stroke="#000" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="mt-4 text-sm text-muted-foreground">
+              <p>* Cost Efficiency represents the fertility increase per ₹100 spent</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
