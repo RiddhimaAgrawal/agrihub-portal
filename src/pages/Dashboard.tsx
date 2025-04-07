@@ -1,3 +1,26 @@
+function extractChartDataFromRecommendation(recommendationText: string) {
+  const microSolutionMatch = recommendationText.match(/Microbial Solution:\s*(.*?)\n/);
+  const fertilizerMatch = recommendationText.match(/Fertilizer Solution:\s*(.*?)\n/);
+  // const microCostMatch = recommendationText.match(/Cost: ₹([\d.]+)\n[\r]?\nOR/);
+  const microCostMatch = recommendationText.match(/Microbial Solution:[\s\S]*?Cost: ₹([\d.]+)/);
+
+  const fertilizerCostMatch = recommendationText.match(/Fertilizer Solution:[\s\S]*?Cost: ₹([\d.]+)/);
+  const microFertilityMatch = recommendationText.match(/Fertility Increase: (\d+)-(\d+)%/);
+  const fertilizerFertilityMatch = recommendationText.match(/Fertilizer Solution:[\s\S]*?Fertility Increase: (\d+)-(\d+)%/);
+
+  return {
+    microSolution: microSolutionMatch?.[1] || "",
+    fertilizer: fertilizerMatch?.[1] || "",
+    microCost: microCostMatch ? parseFloat(microCostMatch[1]) : 0,
+    fertilizerCost: fertilizerCostMatch ? parseFloat(fertilizerCostMatch[1]) : 0,
+    microFertilityIncrease: microFertilityMatch
+      ? (parseFloat(microFertilityMatch[1]) + parseFloat(microFertilityMatch[2])) / 2
+      : 0,
+    fertilizerFertilityIncrease: fertilizerFertilityMatch
+      ? (parseFloat(fertilizerFertilityMatch[1]) + parseFloat(fertilizerFertilityMatch[2])) / 2
+      : 0,
+  };
+}
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -92,56 +115,92 @@ const Dashboard = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // This would normally call the backend with the form data
-    // For demo purposes, we'll show a mock recommendation
-    
-    const mockRecommendation = `
-    For ${crop} stubble in ${season}, ${district} (${soilType} soil):
-
-    Microbial Solution:
-    Bio-Decomposer Mix
-    Content Ratio: Trichoderma 45%, Pseudomonas 35%, Organic activators 20%
-    Dosage: ${(parseFloat(landSize) * 2.5).toFixed(2)} kg in ${(parseFloat(landSize) * 50).toFixed(2)} L water
-    Fertility Increase: 15-20%
-    Cost: ₹${(parseFloat(landSize) * 575).toFixed(2)}
-
-    OR
-
-    Fertilizer Solution:
-    NPK 19:19:19 + Micro
-    Content Ratio: N 19%, P 19%, K 19%, Micronutrients 2%
-    Dosage: ${(parseFloat(landSize) * 25).toFixed(2)} kg/acre
-    Fertility Increase: 20-25%
-    Cost: ₹${(parseFloat(landSize) * 2250).toFixed(2)}
-
-    Recommendation:
-    Better Option: Microbial Solution
-    Why: The microbial solution (Bio-Decomposer Mix) is recommended because it offers good soil fertility increase at a lower cost compared to the fertilizer. Additionally, microbial solutions are more eco-friendly, promoting sustainable soil health.
-    `;
-    
-    setRecommendation(mockRecommendation);
-    
-    // Extract data for charts
-    const microCost = parseFloat(landSize) * 575;
-    const fertilizerCost = parseFloat(landSize) * 2250;
-    const microFertility = extractNumericValue("15-20%");
-    const fertilizerFertility = extractNumericValue("20-25%");
-    
-    setChartData({
-      microSolution: "Bio-Decomposer Mix",
-      fertilizer: "NPK 19:19:19 + Micro",
-      microCost: microCost,
-      fertilizerCost: fertilizerCost,
-      microFertilityIncrease: microFertility,
-      fertilizerFertilityIncrease: fertilizerFertility
-    });
-    
-    toast({
-      title: "Analysis complete",
-      description: "Recommendation generated successfully",
-    });
+   try {
+      const response = await fetch("http://localhost:5000/get_recommendation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          district,
+          crop,
+          soilType,
+          season,
+          landSize,
+          unit,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch recommendation");
+      }
+  
+      const data = await response.json();
+  
+      const { recommendation: apiRecommendation } = data;
+  
+      // 👇 Extract chart data from string
+      const extractedChartData = extractChartDataFromRecommendation(apiRecommendation);
+  
+      setRecommendation(apiRecommendation);
+      setChartData(extractedChartData);
+  
+      toast({
+        title: "Analysis complete",
+        description: "Recommendation generated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message || "Something went wrong",
+        variant: "destructive",
+      });
+    }
   };
+
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+    
+  //   // Call the backend API with the form data
+  //   try {
+  //     const response = await fetch("http://localhost:5000/get_recommendation", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         district,
+  //         crop,
+  //         soilType,
+  //         season,
+  //         landSize,
+  //         unit,
+  //       }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch recommendation");
+  //     }
+
+  //     const data = await response.json();
+
+  //     const { recommendation: apiRecommendation, chartData: apiChartData } = data;
+
+  //     setRecommendation(apiRecommendation);
+  //     setChartData(apiChartData);
+
+  //     toast({
+  //       title: "Analysis complete",
+  //       description: "Recommendation generated successfully",
+  //     });
+  //   } catch (error) {
+  //     toast({
+  //       title: "Error",
+  //       description: error.message || "Something went wrong",
+  //       variant: "destructive",
+  //     });
+  //   }
+  // };
 
   if (loading) {
     return (
@@ -313,6 +372,6 @@ const Dashboard = () => {
       </div>
     </div>
   );
-};
-
+};  
+    
 export default Dashboard;
