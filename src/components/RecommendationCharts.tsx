@@ -46,13 +46,17 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
     }
   ];
   
-  // Separate chart for fertility increase and cost efficiency
-  const performanceData = [
+  // Data for fertility increase chart - separate from cost efficiency
+  const fertilityData = [
     {
       name: "Fertility Increase (%)",
       Microbial: microFertilityIncrease || 0,
       Fertilizer: fertilizerFertilityIncrease || 0,
-    },
+    }
+  ];
+  
+  // Data for cost efficiency chart
+  const efficiencyData = [
     {
       name: "Cost Efficiency",
       Microbial: microFertilityIncrease ? Number(((microFertilityIncrease / (microCost || 1)) * 10).toFixed(2)) : 0,
@@ -76,6 +80,24 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
     { name: "Microbial Activity", value: 25 }
   ];
 
+  // Calculate the maximum cost value for y-axis domain
+  const maxCost = Math.max(
+    microCost || 0,
+    fertilizerCost || 0
+  );
+  
+  // Calculate maximum fertility increase value for y-axis domain
+  const maxFertilityIncrease = Math.max(
+    microFertilityIncrease || 0,
+    fertilizerFertilityIncrease || 0
+  );
+  
+  // Calculate maximum efficiency value for y-axis domain
+  const maxEfficiency = Math.max(
+    microFertilityIncrease ? Number(((microFertilityIncrease / (microCost || 1)) * 10).toFixed(2)) : 0,
+    fertilizerFertilityIncrease ? Number(((fertilizerFertilityIncrease / (fertilizerCost || 1)) * 10).toFixed(2)) : 0
+  );
+
   return (
     <div className="space-y-6 mt-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -95,13 +117,18 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
-                  <YAxis domain={[0, 'auto']} />
-                  <Tooltip formatter={(value: number | string) => {
-                    if (typeof value === 'number') {
-                      return [`₹${value.toFixed(2)}`, ''];
-                    }
-                    return [value, ''];
-                  }} />
+                  <YAxis 
+                    domain={[0, maxCost * 1.2 || 100]} 
+                    tickFormatter={(value) => `₹${value}`}
+                  />
+                  <Tooltip 
+                    formatter={(value: number | string) => {
+                      if (typeof value === 'number') {
+                        return [`₹${value.toFixed(2)}`, ''];
+                      }
+                      return [value, ''];
+                    }} 
+                  />
                   <Legend />
                   <Bar dataKey="Microbial" fill="#22c55e" name={`Microbial${microSolution ? ` (${microSolution})` : ''}`} />
                   <Bar dataKey="Fertilizer" fill="#f97316" name={`Fertilizer${fertilizer ? ` (${fertilizer})` : ''}`} />
@@ -113,42 +140,120 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
 
         <Card>
           <CardHeader>
-            <CardTitle>Performance Comparison</CardTitle>
+            <CardTitle>Fertility Increase</CardTitle>
             <CardDescription>
-              Fertility increase and cost efficiency comparison
+              Fertility improvement with each solution
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  data={performanceData}
+                  data={fertilityData}
                   margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
-                  <YAxis domain={[0, 'auto']} />
-                  <Tooltip formatter={(value: number | string) => {
-                    if (typeof value === 'number') {
-                      return [value.toFixed(2), ''];
-                    }
-                    return [value, ''];
-                  }} />
+                  <YAxis 
+                    domain={[0, maxFertilityIncrease * 1.2 || 100]}
+                    tickFormatter={(value) => `${value}%`}
+                  />
+                  <Tooltip 
+                    formatter={(value: number | string) => {
+                      if (typeof value === 'number') {
+                        return [`${value.toFixed(2)}%`, ''];
+                      }
+                      return [value, ''];
+                    }} 
+                  />
                   <Legend />
                   <Bar dataKey="Microbial" fill="#22c55e" name={`Microbial${microSolution ? ` (${microSolution})` : ''}`} />
                   <Bar dataKey="Fertilizer" fill="#f97316" name={`Fertilizer${fertilizer ? ` (${fertilizer})` : ''}`} />
-                  <ReferenceLine y={0} stroke="#000" />
                 </BarChart>
               </ResponsiveContainer>
-            </div>
-            <div className="mt-4 text-sm text-muted-foreground">
-              <p>* Cost Efficiency represents the fertility increase per ₹100 spent</p>
             </div>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Cost Efficiency</CardTitle>
+            <CardDescription>
+              Fertility increase per ₹100 spent
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={efficiencyData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis 
+                    domain={[0, maxEfficiency * 1.2 || 10]}
+                  />
+                  <Tooltip 
+                    formatter={(value: number | string) => {
+                      if (typeof value === 'number') {
+                        return [`${value.toFixed(2)} points`, ''];
+                      }
+                      return [value, ''];
+                    }} 
+                  />
+                  <Legend />
+                  <Bar dataKey="Microbial" fill="#22c55e" name={`Microbial${microSolution ? ` (${microSolution})` : ''}`} />
+                  <Bar dataKey="Fertilizer" fill="#f97316" name={`Fertilizer${fertilizer ? ` (${fertilizer})` : ''}`} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Soil Nutrient Balance</CardTitle>
+            <CardDescription>
+              Comparing nutrient levels with different solutions
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={nutrientBalanceData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis 
+                    domain={[0, 100]} 
+                    label={{ value: "Nutrient Availability (%)", angle: -90, position: "insideLeft" }} 
+                  />
+                  <Tooltip formatter={(value) => `${value}%`} />
+                  <Legend />
+                  <Bar dataKey="valueWithMicrobial" name="With Microbial Solution" fill="#22c55e" />
+                  <Bar dataKey="valueWithFertilizer" name="With Fertilizer" fill="#f97316" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="mt-4 text-sm space-y-2">
+              <p className="font-medium">Impacts of Nutrient Imbalance:</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Reduced crop yield and quality</li>
+                <li>Decreased soil biodiversity</li>
+                <li>Increased susceptibility to pests and diseases</li>
+                <li>Long-term soil degradation and erosion</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
         <Card>
           <CardHeader>
             <CardTitle>Benefits of Stubble Dissolution</CardTitle>
@@ -188,42 +293,6 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
               <p><span className="font-medium">Carbon Sequestration:</span> Helps store carbon in soil, reducing atmospheric CO₂</p>
               <p><span className="font-medium">Nutrient Cycling:</span> Releases nutrients gradually, enhancing long-term fertility</p>
               <p><span className="font-medium">Microbial Activity:</span> Stimulates beneficial soil organisms essential for plant health</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Soil Nutrient Balance</CardTitle>
-            <CardDescription>
-              Comparing nutrient levels with different solutions
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={nutrientBalanceData}
-                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis domain={[0, 100]} label={{ value: "Nutrient Availability (%)", angle: -90, position: "insideLeft" }} />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="valueWithMicrobial" name="With Microbial Solution" fill="#22c55e" />
-                  <Bar dataKey="valueWithFertilizer" name="With Fertilizer" fill="#f97316" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="mt-4 text-sm space-y-2">
-              <p className="font-medium">Impacts of Nutrient Imbalance:</p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>Reduced crop yield and quality</li>
-                <li>Decreased soil biodiversity</li>
-                <li>Increased susceptibility to pests and diseases</li>
-                <li>Long-term soil degradation and erosion</li>
-              </ul>
             </div>
           </CardContent>
         </Card>
