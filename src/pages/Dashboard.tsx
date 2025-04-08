@@ -1,3 +1,4 @@
+
 function extractChartDataFromRecommendation(recommendationText: string) {
   const microSolutionMatch = recommendationText.match(/Microbial Solution:\s*(.*?)\n/);
   const fertilizerMatch = recommendationText.match(/Fertilizer Solution:\s*(.*?)\n/);
@@ -113,9 +114,9 @@ const Dashboard = () => {
     return 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-   try {
+    try {
       const response = await fetch("http://localhost:5000/get_recommendation", {
         method: "POST",
         headers: {
@@ -149,7 +150,7 @@ const Dashboard = () => {
         title: "Analysis complete",
         description: "Recommendation generated successfully",
       });
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
         description: error.message || "Something went wrong",
