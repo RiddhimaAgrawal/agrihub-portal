@@ -55,8 +55,8 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
     },
     {
       name: "Cost Efficiency",
-      Microbial: microFertilityIncrease ? ((microFertilityIncrease / (microCost || 1)) * 10).toFixed(2) : 0,
-      Fertilizer: fertilizerFertilityIncrease ? ((fertilizerFertilityIncrease / (fertilizerCost || 1)) * 10).toFixed(2) : 0,
+      Microbial: microFertilityIncrease ? Number(((microFertilityIncrease / (microCost || 1)) * 10).toFixed(2)) : 0,
+      Fertilizer: fertilizerFertilityIncrease ? Number(((fertilizerFertilityIncrease / (fertilizerCost || 1)) * 10).toFixed(2)) : 0,
     }
   ];
 
@@ -95,7 +95,7 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
-                  <YAxis />
+                  <YAxis domain={[0, 'auto']} />
                   <Tooltip formatter={(value: number | string) => {
                     if (typeof value === 'number') {
                       return [`₹${value.toFixed(2)}`, ''];
@@ -127,7 +127,7 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
-                  <YAxis />
+                  <YAxis domain={[0, 'auto']} />
                   <Tooltip formatter={(value: number | string) => {
                     if (typeof value === 'number') {
                       return [value.toFixed(2), ''];
@@ -208,7 +208,7 @@ export const RecommendationCharts: React.FC<ChartProps> = ({
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
-                  <YAxis label={{ value: "Nutrient Availability (%)", angle: -90, position: "insideLeft" }} />
+                  <YAxis domain={[0, 100]} label={{ value: "Nutrient Availability (%)", angle: -90, position: "insideLeft" }} />
                   <Tooltip />
                   <Legend />
                   <Bar dataKey="valueWithMicrobial" name="With Microbial Solution" fill="#22c55e" />
